@@ -113,7 +113,7 @@ A Pod represents a group of co-located containers with some associated data volu
 
 The diagram below shows a pod with two containers, MainApp and Logger, and two data volumes, made available under two mount points. Containers MainApp and Logger share the network namespace of a third container, known as the pause container. The pause container is used to get an IP address, then all the containers in the pod will use its network namespace. You won’t see this container from the Kubernetes perspective, but you would by running sudo docker ps. The volumes are shown for completeness and will be discussed later.  
 
-IMAGEHERE 
+[https://github.com/bordera-randy/Kubernetes/blob/main/img/dovkeccu43i9-NewPodNetwork.png]
 
 To communicate with each other, containers can use the loopback interface, write to files on a common filesystem, or via inter-process communication (IPC). As a result, co-locating applications in the same pod may have issues. There is a network plugin which will allow more than one IP address, but so far, it has only been used within HPE labs.  
 
