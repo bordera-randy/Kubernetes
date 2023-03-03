@@ -54,66 +54,65 @@ For example:
 `    app: examplepod     `  
 `    pod-template-hash: 1234   `  
 `  name: examplepod-1234-vtlzd`  
-`.  .  .  .  `  
+`....  `  
 
 Using this output, one way we could select the pod would be to use the app pod label.   In the command line, the colon(:) would be replaced with an equals (=) sign and the space removed.   The use of -l or --selector options can be used with kubectl.  
 
-`ckad1$ kubectl -n test2 get --selector app=examplepod pod`
+`ckad1$ kubectl -n test2 get --selector app=examplepod pod`  
 
-`NAME                   READY  STATUS   RESTARTS  AGE`
-`examplepod-1234-vtlzd  1/1    Running  0         25m`
+`NAME                   READY  STATUS   RESTARTS  AGE`  
+`examplepod-1234-vtlzd  1/1    Running  0         25m`  
 
 There are several built-in object labels.   For example nodes have labels such as the arch, hostname, and os, which could be used for assigning pods to a particular node, or type of node.  
 
-`ckad1$ kubectl get node worker`
-
-`.  .  .  .  `
-`   creationTimestamp: "2020-05-12T14:23:04Z"`
-`   labels:`
-`     beta.  kubernetes.  io/arch: amd64`
-`     beta.  kubernetes.  io/os: linux`
-`     kubernetes.  io/arch: amd64`
-`     kubernetes.  io/hostname: worker`
-`     kubernetes.  io/os: linux`
-`   managedFields:`
-`.  .  .  .  `
+`ckad1$ kubectl get node worker`  
+ 
+`....  `  
+`   creationTimestamp: "2020-05-12T14:23:04Z"`  
+`   labels:`  
+`     beta.  kubernetes.  io/arch: amd64`  
+`     beta.  kubernetes.  io/os: linux`  
+`     kubernetes.  io/arch: amd64`  
+`     kubernetes.  io/hostname: worker`  
+`     kubernetes.  io/os: linux`  
+`   managedFields:`  
+`....  `  
 
 The nodeSelector: entry in the podspec could use this label to cause a pod to be deployed on a particular node with an entry such as:
-     spec:
-       nodeSelector:
-         kubernetes.  io/hostname: worker
-       containers:
+     spec:  
+       nodeSelector:  
+         kubernetes.  io/hostname: worker  
+       containers:  
 
-# Multi-Container Pods
+# Multi-Container Pods  
 The idea of multiple containers in a Pod goes against the architectural idea of decoupling as much as possible.   One could run an entire operating system inside a container, but would lose much of the granular scalability Kubernetes is capable of.   But there are certain needs in which a second or third co-located container makes sense.   By adding a second container, each container can still be optimized and developed independently, and both can scale and be repurposed to best meet the needs of the workload.  
 
-# Sidecar, Adapter, Ambassador and initContainers
+# Sidecar, Adapter, Ambassador and initContainers  
 
-Sidecar
+## Sidecar  
 The idea for a sidecar container is to add some functionality not present in the main container.   Rather than bloating code, which may not be necessary in other deployments, adding a container to handle a function such as logging solves the issue, while remaining decoupled and scalable.   Prometheus monitoring and Fluentd logging leverage sidecar containers to collect data.  
 
-Close Adapter
+## Close Adapter  
 The basic purpose of an adapter container is to modify data, either on ingress or egress, to match some other need.   Perhaps, an existing enterprise-wide monitoring tools has particular data format needs.   An adapter would be an efficient way to standardize the output of the main container to be ingested by the monitoring tool, without having to modify the monitor or the containerized application.   An adapter container transforms multiple applications to singular view.  
 
-Close Ambassador
-Ambassador is, 
-
-"an open source, Kubernetes-native API gateway for microservices built on Envoy".  
+## Close Ambassador  
+Ambassador is, "an open source, Kubernetes-native API gateway for microservices built on Envoy".  
 
 It allows for access to the outside world without having to implement a service or another entry in an ingress controller: proxy local connection, reverse proxy, limits HTTP requests, re-route from the main container to the outside world.  ​
 
-Close initContainer
-The use of an initContainer allows one or more containers to run only if one or more previous containers run and exit successfully.   For example, you could have a checksum verification scan container and a security scan container check the intended containers.   Only if both containers pass the checks would the following group of containers be attempted.   You can see a simple example below:
+## Close initContainer  
+The use of an initContainer allows one or more containers to run only if one or more previous containers run and exit successfully.   For example, you could have a checksum verification scan container and a security scan container check the intended containers.   Only if both containers pass the checks would the following group of containers be attempted.   
+You can see a simple example below:  
 
-spec:
-  containers:
-  - name: intended
-    image: workload
-  initContainers:
-  - name: scanner
-    image: scanapp
+`spec:`  
+`  containers:`  
+`  - name: intended`  
+`    image: workload`  
+`  initContainers:`  
+`  - name: scanner`  
+`    image: scanapp`  
 
-Custom Resource Definitions
+# Custom Resource Definitions
 We have been working with built-in resources, or API endpoints.   The flexibility of Kubernetes allows for dynamic addition of new resources as well.   Once these Custom Resources (CRD) have been added, the objects can be created and accessed using standard calls and commands like kubectl.   The creation of a new object stores new structured data in the etcd database and allows access via the kube-apiserver.  
 
 To make a new custom resource part of a declarative API, there needs to be a controller to retrieve the structured data continually and act to meet and maintain the declared state.   This controller, or operator, is an agent to create and manage one or more instances of a specific stateful application.   We have worked with built-in controllers such for Deployments and other resources.  
@@ -126,30 +125,25 @@ As we have learned, the decoupled nature of Kubernetes depends on a collection o
 
 If the cluster is using Calico, you will find there are several CRDs already in use.   More information on the operator framework and SDK can be found on GitHub.   You can also search through existing operators which may be useful on the OperatorHub website.  
 
-oints to Ponder
-Click on each card to see answers to the following questions.  
-
-Is my application as decoupled as it could possibly be?
-
-Is there anything that I could take out, or make its own container?
+# Points to Ponder  
+Is my application as decoupled as it could possibly be?  
+Is there anything that I could take out, or make its own container?  
 
 These questions, while essential, often require an examination of the application within the container.   Optimal use of Kubernetes is not typically found by containerization of a legacy application and deployment.   Rather, most applications are rebuilt entirely, with a focus on decoupled micro-services.  
 
 When every container can survive any other containers regular termination, without the end-user noticing, you have probably decoupled the application properly.  
 
+Is each container transient, does it expect and have code to properly react when other containers are transient?  
 
-Is each container transient, does it expect and have code to properly react when other containers are transient?
-
-Could I run Chaos Monkey to kill ANY and multiple Pods, and my user would not notice?
+Could I run Chaos Monkey to kill ANY and multiple Pods, and my user would not notice?  
 
 Most Kubernetes deployments are not as transient as they should be, especially among legacy applications.   The developer holds on to a previous approach and does not create the containerized application such that every connection and communication is transient and will be terminated.   With code waiting for the service to connect to a replacement Pod and the containers within.   
 
 Some will note that this is not as efficient as it could be.   This is correct.   We are not optimizing and working against the orchestration tool.   Instead, we are taking advantage of the decoupled and transient environment to scale and use only the particular microservice the end user needs.  
 
+Can I scale any particular component to meet workload demand?  
 
-Can I scale any particular component to meet workload demand?
-
-Have I used the most open standard stable enough to meet my needs?
+Have I used the most open standard stable enough to meet my needs?  
 
 # Jobs
 Just as we may need to redesign our applications to be decoupled, we may also consider that microservices may not need to run all the time.   The use of Jobs and CronJobs can further assist with implementing decoupled and transient microservices.  
