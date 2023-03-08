@@ -31,9 +31,9 @@
 ## Services  
 |Command|	Description  |  
 | --- | --- |  
-|  kubectl get services	List all services in the current namespace.  
-|  kubectl describe service <name>	Get detailed information about a specific service.  
-|  kubectl expose deployment <name> --type=NodePort --port=<port>	Expose a deployment as a service on a specific port.  
+|  kubectl get services	|  List all services in the current namespace.  
+|  kubectl describe service <name>	|  Get detailed information about a specific service.  
+|  kubectl expose deployment <name> --type=NodePort --port=<port>	|  Expose a deployment as a service on a specific port.  
 
 ## Configurations  
 |Command|	Description  |  
