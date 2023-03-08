@@ -2,10 +2,10 @@
 ## Basics  
 |Command|	Description  |
 | --- | --- |
-|kubectl version	| Display the Kubernetes version.  |
-||kubectl cluster-info	|Display the cluster info.  |
-|kubectl get nodes	|List all worker nodes in the cluster.  |
-|kubectl get namespaces	|List all namespaces in the cluster. | 
+| kubectl version	| Display the Kubernetes version.  |
+| kubectl cluster-info	| Display the cluster info.  |
+| kubectl get nodes	| List all worker nodes in the cluster.  |
+| kubectl get namespaces	| List all namespaces in the cluster. | 
 
 ## Pods  
 |Command|	Description  | 
