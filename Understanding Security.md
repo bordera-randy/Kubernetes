@@ -127,7 +127,7 @@ Clusters installed using kubeadm allow pods any possible elevation in privilege 
 This security limitation is called a security context. It can be defined for the entire pod or per container, and is represented as additional sections in the resources manifests. A notable difference is that Linux capabilities are set at the container level.
 
 For example, if you want to enforce a policy that containers cannot run their process as the root user, you can add a pod security context like the one below:
-````
+```
 apiVersion: v1
 kind: Pod
 metadata:
