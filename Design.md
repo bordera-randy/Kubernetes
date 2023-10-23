@@ -40,22 +40,22 @@ The labels, annotations, name, and metadata of an object can be found near the t
 `$ kubectl get object-name -o  yaml `  
 
 For example:  
+```
+ckad1$ kubectl get pod examplepod-1234-vtlzd -o yaml  
 
-`ckad1$ kubectl get pod examplepod-1234-vtlzd -o yaml`  
-
-`apiVersion: v1`  
-`kind: Pod`  
-`metadata:  `  
-`  annotations:     `  
-`    cni.  projectcalico.  org/podIP: 192.  168.  113.  220/32   `  
-`  creationTimestamp: "2020-01-31T15:13:08Z"   `  
-`  generateName: examplepod-1234-   `  
-`  labels:     `  
-`    app: examplepod     `  
-`    pod-template-hash: 1234   `  
-`  name: examplepod-1234-vtlzd`  
-`....  `  
-
+apiVersion: v1  
+kind: Pod  
+metadata:    
+  annotations:       
+    cni.  projectcalico.  org/podIP: 192.168.113.220/32     
+  creationTimestamp: "2020-01-31T15:13:08Z"     
+  generateName: examplepod-1234-     
+  labels:       
+    app: examplepod       
+    pod-template-hash: 1234     
+  name: examplepod-1234-vtlzd  
+....    
+```
 Using this output, one way we could select the pod would be to use the app pod label.   In the command line, the colon(:) would be replaced with an equals (=) sign and the space removed.   The use of -l or --selector options can be used with kubectl.  
 
 `ckad1$ kubectl -n test2 get --selector app=examplepod pod`  
