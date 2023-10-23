@@ -37,7 +37,7 @@ Selectors are namespace-scoped.   Use the --all-namespaces argument to select ma
 
 The labels, annotations, name, and metadata of an object can be found near the top of
 
-`$ kubectl get object-name -o  yaml `  
+$ kubectl get object-name -o  yaml   
 
 For example:  
 ```
@@ -54,30 +54,30 @@ metadata:
     app: examplepod       
     pod-template-hash: 1234     
   name: examplepod-1234-vtlzd  
-....    
+  
 ```
 Using this output, one way we could select the pod would be to use the app pod label.   In the command line, the colon(:) would be replaced with an equals (=) sign and the space removed.   The use of -l or --selector options can be used with kubectl.  
+```
+ckad1$ kubectl -n test2 get --selector app=examplepod pod  
 
-`ckad1$ kubectl -n test2 get --selector app=examplepod pod`  
-
-`NAME                   READY  STATUS   RESTARTS  AGE`  
-`examplepod-1234-vtlzd  1/1    Running  0         25m`  
+NAME                   READY  STATUS   RESTARTS  AGE  
+examplepod-1234-vtlzd  1/1    Running  0         25m  
+```
 
 There are several built-in object labels.   For example nodes have labels such as the arch, hostname, and os, which could be used for assigning pods to a particular node, or type of node.  
-
-`ckad1$ kubectl get node worker`  
- 
-`....  `  
-`   creationTimestamp: "2020-05-12T14:23:04Z"`  
-`   labels:`  
-`     beta.  kubernetes.  io/arch: amd64`  
-`     beta.  kubernetes.  io/os: linux`  
-`     kubernetes.  io/arch: amd64`  
-`     kubernetes.  io/hostname: worker`  
-`     kubernetes.  io/os: linux`  
-`   managedFields:`  
-`....  `  
-
+```
+ckad1$ kubectl get node worker  
+    
+   creationTimestamp: "2020-05-12T14:23:04Z"  
+   labels:  
+     beta.  kubernetes.  io/arch: amd64  
+     beta.  kubernetes.  io/os: linux  
+     kubernetes.  io/arch: amd64  
+     kubernetes.  io/hostname: worker  
+     kubernetes.  io/os: linux  
+   managedFields:  
+    
+```
 The nodeSelector: entry in the podspec could use this label to cause a pod to be deployed on a particular node with an entry such as:
      spec:  
        nodeSelector:  
@@ -103,15 +103,15 @@ It allows for access to the outside world without having to implement a service 
 ## Close initContainer  
 The use of an initContainer allows one or more containers to run only if one or more previous containers run and exit successfully.   For example, you could have a checksum verification scan container and a security scan container check the intended containers.   Only if both containers pass the checks would the following group of containers be attempted.   
 You can see a simple example below:  
-
-`spec:`  
-`  containers:`  
-`  - name: intended`  
-`    image: workload`  
-`  initContainers:`  
-`  - name: scanner`  
-`    image: scanapp`  
-
+```
+spec:  
+  containers:  
+  - name: intended  
+    image: workload  
+  initContainers:  
+  - name: scanner  
+    image: scanapp  
+```
 # Custom Resource Definitions
 We have been working with built-in resources, or API endpoints.   The flexibility of Kubernetes allows for dynamic addition of new resources as well.   Once these Custom Resources (CRD) have been added, the objects can be created and accessed using standard calls and commands like kubectl.   The creation of a new object stores new structured data in the etcd database and allows access via the kube-apiserver.  
 
