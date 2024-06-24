@@ -9,7 +9,7 @@ Resources for learning and troubleshooting Kubernetes
 [Security](https://github.com/bordera-randy/Kubernetes/blob/main/Security.md)  
 [EXPOSING APPLICATIONS](https://github.com/bordera-randy/Kubernetes/blob/main/Exposing%20Applications.md)  
 [APPLICATION TROUBLESHOOTING](https://github.com/bordera-randy/Kubernetes/blob/main/Application%20Troubleshooting.md)  
-[Labs](https://github.com/bordera-randy/Kubernetes/blob/main/labs/readme.md)  
+[Labs](https://github.com/bordera-randy/Kubernetes/tree/main/Labs/readme.md)  
 [Additional Resources](https://github.com/bordera-randy/Kubernetes/blob/main/Resources.md)  
 
 
